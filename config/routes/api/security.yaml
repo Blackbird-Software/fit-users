@@ -1,0 +1,4 @@
+login:
+  path: '/token'
+  methods: ['POST']
+  controller: App\Controller\SecurityController::login

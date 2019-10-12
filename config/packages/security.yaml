@@ -1,0 +1,34 @@
+security:
+  providers:
+    main_user_provider:
+      id: App\Security\UserProvider
+
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+    api_get_token:
+      pattern:  "^/api/token$"
+      methods: [POST]
+      stateless: true
+      anonymous: true
+    api_register:
+      pattern:  "^/api/users$"
+      methods: [POST]
+      stateless: true
+      anonymous: true
+    api:
+      pattern: "^/api"
+      stateless: true
+      provider: main_user_provider
+      guard:
+        authenticators:
+          - App\Security\CognitoAuthenticator
+
+  access_control:
+    - { path: "^/api/doc.json$", methods: ["GET"], roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: "^/api/doc$", methods: ["GET"], roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: "^/api/token$", methods: ["POST"], roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: "^/api/users$", methods: ["POST"], roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: "^/api", roles: IS_AUTHENTICATED_FULLY }
