@@ -25,9 +25,6 @@ class UserController extends AbstractController
 
         $response = $this->client->register($email, $password, $firstname);
 
-        return new JsonResponse(
-            $response->toArray(),
-            Response::HTTP_CREATED
-        );
+        return $this->json($response->toArray(), Response::HTTP_CREATED);
     }
 }

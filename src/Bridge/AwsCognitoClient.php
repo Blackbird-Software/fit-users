@@ -4,6 +4,7 @@ namespace App\Bridge;
 
 use Aws\CognitoIdentity\CognitoIdentityProvider;
 use Aws\CognitoIdentityProvider\CognitoIdentityProviderClient;
+use Aws\CognitoIdentityProvider\Exception\CognitoIdentityProviderException;
 use Aws\Result;
 
 class AwsCognitoClient
@@ -22,7 +23,8 @@ class AwsCognitoClient
         string $clientSecret,
         string $region = 'us-east-1',
         string $version = 'latest'
-    ) {
+    )
+    {
         $this->client = new CognitoIdentityProviderClient([
             'region' => $region,
             'version' => $version,
@@ -32,23 +34,30 @@ class AwsCognitoClient
         $this->clientSecret = $clientSecret;
     }
 
-    public function findByUsername(string $username): Result
+    public function findByUsername(string $username): ?Result
     {
-        return $this->client->listUsers([
-            'UserPoolId' => $this->poolId,
-            'Filter'     => "email=\"" . $username . "\""
-        ]);
+        try {
+            $user = $this->client->adminGetUser([
+                'Username' => $username,
+                'UserPoolId' => $this->poolId,
+            ]);
+        } catch (CognitoIdentityProviderException $e) {
+            dd($e->getMessage());
+        }
+
+        return $user;
     }
 
     public function checkCredentials($username, $password): Result
     {
         return $this->client->adminInitiateAuth([
-            'UserPoolId'     => $this->poolId,
-            'ClientId'       => $this->clientId,
-            'AuthFlow'       => 'ADMIN_NO_SRP_AUTH', // this matches the 'server-based sign-in' checkbox setting from earlier
+            'UserPoolId' => $this->poolId,
+            'ClientId' => $this->clientId,
+            'AuthFlow' => 'ADMIN_NO_SRP_AUTH', // this matches the 'server-based sign-in' checkbox setting from earlier
             'AuthParameters' => [
                 'USERNAME' => $username,
-                'PASSWORD' => $password
+                'PASSWORD' => $password,
+                'SECRET_HASH' => $this->cognitoSecretHash($username)
             ]
         ]);
     }
@@ -57,7 +66,7 @@ class AwsCognitoClient
     {
         return $this->client->adminListGroupsForUser([
             'UserPoolId' => $this->poolId,
-            'Username'   => $username
+            'Username' => $username
         ]);
     }
 

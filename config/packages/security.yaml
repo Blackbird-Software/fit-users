@@ -13,6 +13,14 @@ security:
       methods: [POST]
       stateless: true
       anonymous: true
+      provider: main_user_provider
+      guard:
+        authenticators:
+          - App\Security\CognitoAuthenticator
+#      json_login:
+#        check_path: api_login_check
+#        username_path: email
+#        password_path: password
     api_register:
       pattern:  "^/api/users$"
       methods: [POST]
