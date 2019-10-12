@@ -23,10 +23,10 @@ class UserController extends AbstractController
         $password = $request->request->get('password');
         $firstname = $request->request->get('firstname');
 
-        $data = $this->client->register($email, $password, $firstname);
+        $response = $this->client->register($email, $password, $firstname);
 
         return new JsonResponse(
-            $data->get('User'),
+            $response->toArray(),
             Response::HTTP_CREATED
         );
     }
