@@ -31,3 +31,6 @@ services:
             $poolId: '%env(COGNITO_POOL_ID)%'
             $clientId: '%env(COGNITO_CLIENT_ID)%'
             $clientSecret: '%env(COGNITO_CLIENT_SECRET)%'
+            $key: '%env(AWS_ACCESS_KEY_ID)%'
+            $secret: '%env(AWS_SECRET_ACCESS_KEY)%'
+

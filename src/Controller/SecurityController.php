@@ -12,8 +12,6 @@ final class SecurityController extends AbstractController
     {
         $user = $this->getUser();
 
-        dd($user);
-
         return $this->json([
             'username' => $user->getUsername(),
             'roles' => $user->getRoles(),

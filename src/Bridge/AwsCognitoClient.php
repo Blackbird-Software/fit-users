@@ -21,6 +21,8 @@ class AwsCognitoClient
         string $poolId,
         string $clientId,
         string $clientSecret,
+        string $key,
+        string $secret,
         string $region = 'us-east-1',
         string $version = 'latest'
     )
@@ -28,6 +30,10 @@ class AwsCognitoClient
         $this->client = new CognitoIdentityProviderClient([
             'region' => $region,
             'version' => $version,
+            'credentials' => [
+                'key' => $key,
+                'secret' => $secret
+            ]
         ]);
         $this->poolId = $poolId;
         $this->clientId = $clientId;
@@ -42,7 +48,7 @@ class AwsCognitoClient
                 'UserPoolId' => $this->poolId,
             ]);
         } catch (CognitoIdentityProviderException $e) {
-            dd($e->getMessage());
+            return null;
         }
 
         return $user;
