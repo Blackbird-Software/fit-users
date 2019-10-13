@@ -8,7 +8,8 @@ provider:
   runtime: provided
   environment:
     # Symfony environment variables
-    APP_ENV: prod
+    APP_ENV: dev
+    APP_DEBUG: 1
 
 plugins:
   - ./vendor/bref/bref
