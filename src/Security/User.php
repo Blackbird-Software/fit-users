@@ -1,36 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class User implements UserInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $email;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $roles = [];
+
+    /**
+     * User constructor.
+     */
+    public function __construct(string $email, array $roles)
+    {
+        $this->email = $email;
+        $this->roles = $roles;
+    }
 
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getUsername(): string
     {
         return (string) $this->email;
@@ -38,7 +35,6 @@ class User implements UserInterface
 
     /**
      * @see UserInterface
-     * @return array
      */
     public function getRoles(): array
     {
@@ -50,31 +46,24 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
     /**
      * @see UserInterface
      */
-    public function getPassword()
+    public function getPassword(): void
     {
     }
 
     /**
      * @see UserInterface
      */
-    public function getSalt()
+    public function getSalt(): void
     {
     }
 
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 }

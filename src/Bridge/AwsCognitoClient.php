@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\Bridge;
 
 use Aws\CognitoIdentityProvider\CognitoIdentityProviderClient;
@@ -7,24 +10,16 @@ use Aws\Result;
 
 class AwsCognitoClient
 {
-    /**
-     * @var CognitoIdentityProviderClient
-     */
+    /** @var CognitoIdentityProviderClient */
     private $client;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $poolId;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $clientId;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $clientSecret;
 
     public function __construct(
@@ -35,15 +30,14 @@ class AwsCognitoClient
         string $secret,
         string $region = 'us-east-1',
         string $version = 'latest'
-    )
-    {
+    ) {
         $this->client = new CognitoIdentityProviderClient([
             'region' => $region,
             'version' => $version,
             'credentials' => [
                 'key' => $key,
-                'secret' => $secret
-            ]
+                'secret' => $secret,
+            ],
         ]);
         $this->poolId = $poolId;
         $this->clientId = $clientId;
@@ -57,7 +51,7 @@ class AwsCognitoClient
                 'Username' => $username,
                 'UserPoolId' => $this->poolId,
             ]);
-        } catch (CognitoIdentityProviderException $e) {
+        } catch (CognitoIdentityProviderException $exception) {
             return null;
         }
 
@@ -67,7 +61,6 @@ class AwsCognitoClient
     /**
      * @param $username
      * @param $password
-     * @return Result
      */
     public function checkCredentials($username, $password): Result
     {
@@ -78,8 +71,8 @@ class AwsCognitoClient
             'AuthParameters' => [
                 'USERNAME' => $username,
                 'PASSWORD' => $password,
-                'SECRET_HASH' => $this->cognitoSecretHash($username)
-            ]
+                'SECRET_HASH' => $this->cognitoSecretHash($username),
+            ],
         ]);
     }
 
@@ -87,19 +80,13 @@ class AwsCognitoClient
     {
         return $this->client->adminListGroupsForUser([
             'UserPoolId' => $this->poolId,
-            'Username' => $username
+            'Username' => $username,
         ]);
     }
 
-    /**
-     * @param string $email
-     * @param string $password
-     * @param string $firstname
-     * @return Result
-     */
     public function register(string $email, string $password, string $firstname): Result
     {
-        $result = $this->client->signUp([
+        return $this->client->signUp([
             'UserPoolId' => $this->poolId,
             'ClientId' => $this->clientId,
             'SecretHash' => $this->cognitoSecretHash($email),
@@ -108,27 +95,17 @@ class AwsCognitoClient
             'UserAttributes' => [
                 [
                     'Name' => 'given_name',
-                    'Value' => $firstname
-                ]
-            ]
+                    'Value' => $firstname,
+                ],
+            ],
         ]);
-
-        return $result;
     }
 
-    /**
-     * @param string $username
-     * @return string
-     */
     protected function cognitoSecretHash(string $username): string
     {
-        return $this->hash($username . $this->clientId);
+        return $this->hash($username.$this->clientId);
     }
 
-    /**
-     * @param string $message
-     * @return string
-     */
     protected function hash(string $message): string
     {
         $hash = hash_hmac(

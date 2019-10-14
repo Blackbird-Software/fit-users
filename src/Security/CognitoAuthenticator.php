@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\Security;
 
 use App\Bridge\AwsCognitoClient;
@@ -16,7 +19,8 @@ class CognitoAuthenticator extends AbstractGuardAuthenticator
 {
     private $cognitoClient;
 
-    public function __construct(AwsCognitoClient $cognitoClient) {
+    public function __construct(AwsCognitoClient $cognitoClient)
+    {
         $this->cognitoClient = $cognitoClient;
     }
 
@@ -37,14 +41,14 @@ class CognitoAuthenticator extends AbstractGuardAuthenticator
     public function supports(Request $request)
     {
         // @TODO narrow the context
-       return true;
+        return true;
     }
 
     public function getCredentials(Request $request)
     {
         return [
           'email' => $request->request->get('email'),
-          'password' => $request->request->get('password')
+          'password' => $request->request->get('password'),
         ];
     }
 
@@ -56,7 +60,7 @@ class CognitoAuthenticator extends AbstractGuardAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         $data = [
-            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
+            'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
         ];
 
         return new JsonResponse($data, Response::HTTP_FORBIDDEN);
@@ -68,10 +72,10 @@ class CognitoAuthenticator extends AbstractGuardAuthenticator
         return null;
     }
 
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, ?AuthenticationException $authException = null)
     {
         $data = [
-            'message' => 'Authentication Required'
+            'message' => 'Authentication Required',
         ];
 
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);

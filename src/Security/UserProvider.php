@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\Security;
 
 use App\Bridge\AwsCognitoClient;
@@ -9,9 +12,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class UserProvider implements UserProviderInterface
 {
-    /**
-     * @var AWSCognitoClient
-     */
+    /** @var AWSCognitoClient */
     private $cognitoClient;
 
     public function __construct(AWSCognitoClient $cognitoClient)
@@ -21,6 +22,7 @@ class UserProvider implements UserProviderInterface
 
     /**
      * @param string $username
+     *
      * @return User|UserInterface
      */
     public function loadUserByUsername($username): UserInterface
@@ -40,7 +42,7 @@ class UserProvider implements UserProviderInterface
             $user->setRoles(
                 array_map(
                     function ($item) {
-                        return 'ROLE_' . $item['GroupName'];
+                        return 'ROLE_'.$item['GroupName'];
                     },
                     $groups['Groups']
                 )
@@ -51,7 +53,6 @@ class UserProvider implements UserProviderInterface
     }
 
     /**
-     * @param UserInterface $user
      * @return User|UserInterface
      */
     public function refreshUser(UserInterface $user): UserInterface
@@ -70,10 +71,9 @@ class UserProvider implements UserProviderInterface
 
     /**
      * @param string $class
-     * @return bool
      */
     public function supportsClass($class): bool
     {
-        return User::class === $class;
+        return $class === User::class;
     }
 }
