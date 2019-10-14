@@ -1,20 +1,30 @@
 <?php
-
 namespace App\Bridge;
 
-use Aws\CognitoIdentity\CognitoIdentityProvider;
 use Aws\CognitoIdentityProvider\CognitoIdentityProviderClient;
 use Aws\CognitoIdentityProvider\Exception\CognitoIdentityProviderException;
 use Aws\Result;
 
 class AwsCognitoClient
 {
+    /**
+     * @var CognitoIdentityProviderClient
+     */
     private $client;
 
+    /**
+     * @var string
+     */
     private $poolId;
 
+    /**
+     * @var string
+     */
     private $clientId;
 
+    /**
+     * @var string
+     */
     private $clientSecret;
 
     public function __construct(
@@ -54,6 +64,11 @@ class AwsCognitoClient
         return $user;
     }
 
+    /**
+     * @param $username
+     * @param $password
+     * @return Result
+     */
     public function checkCredentials($username, $password): Result
     {
         return $this->client->adminInitiateAuth([
@@ -76,6 +91,12 @@ class AwsCognitoClient
         ]);
     }
 
+    /**
+     * @param string $email
+     * @param string $password
+     * @param string $firstname
+     * @return Result
+     */
     public function register(string $email, string $password, string $firstname): Result
     {
         $result = $this->client->signUp([
@@ -95,11 +116,19 @@ class AwsCognitoClient
         return $result;
     }
 
+    /**
+     * @param string $username
+     * @return string
+     */
     protected function cognitoSecretHash(string $username): string
     {
         return $this->hash($username . $this->clientId);
     }
 
+    /**
+     * @param string $message
+     * @return string
+     */
     protected function hash(string $message): string
     {
         $hash = hash_hmac(

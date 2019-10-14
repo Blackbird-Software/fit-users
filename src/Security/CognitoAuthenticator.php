@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Security;
 
 use App\Bridge\AwsCognitoClient;
@@ -65,6 +64,7 @@ class CognitoAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
+        // return key?
         return null;
     }
 

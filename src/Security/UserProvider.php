@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Security;
 
 use App\Bridge\AwsCognitoClient;
@@ -21,17 +20,10 @@ class UserProvider implements UserProviderInterface
     }
 
     /**
-     * Symfony calls this method if you use features like switch_user
-     * or remember_me.
-     *
-     * If you're not using these features, you do not need to implement
-     * this method.
-     *
-     * @return UserInterface
-     *
-     * @throws UsernameNotFoundException if the user is not found
+     * @param string $username
+     * @return User|UserInterface
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername($username): UserInterface
     {
         $result = $this->cognitoClient->findByUsername($username);
 
@@ -59,19 +51,10 @@ class UserProvider implements UserProviderInterface
     }
 
     /**
-     * Refreshes the user after being reloaded from the session.
-     *
-     * When a user is logged in, at the beginning of each request, the
-     * User object is loaded from the session and then this method is
-     * called. Your job is to make sure the user's data is still fresh by,
-     * for example, re-querying for fresh User data.
-     *
-     * If your firewall is "stateless: true" (for a pure API), this
-     * method is not called.
-     *
-     * @return UserInterface
+     * @param UserInterface $user
+     * @return User|UserInterface
      */
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(
@@ -86,9 +69,10 @@ class UserProvider implements UserProviderInterface
     }
 
     /**
-     * Tells Symfony to use this provider for this User class.
+     * @param string $class
+     * @return bool
      */
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return User::class === $class;
     }
