@@ -33,13 +33,11 @@ class UserProvider implements UserProviderInterface
             throw new UsernameNotFoundException();
         }
 
-        $user = new User();
-        $user->setEmail($username);
-
         $groups = $this->cognitoClient->getRolesForUsername($username);
+        $roles = [];
 
         if (count($groups['Groups']) > 0) {
-            $user->setRoles(
+            $roles = (
                 array_map(
                     function ($item) {
                         return 'ROLE_'.$item['GroupName'];
@@ -49,7 +47,7 @@ class UserProvider implements UserProviderInterface
             );
         }
 
-        return $user;
+        return new User($username, $roles);
     }
 
     /**

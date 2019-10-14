@@ -17,10 +17,10 @@ class User implements UserInterface
     /**
      * User constructor.
      */
-    public function __construct(string $email, array $roles)
+    public function __construct(string $email, ?array $roles = [])
     {
         $this->email = $email;
-        $this->roles = $roles;
+        $this->roles = $roles ?? ['ROLE_USER'];
     }
 
     public function getEmail(): ?string
@@ -38,12 +38,7 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        return array_unique($this->roles);
     }
 
     /**
