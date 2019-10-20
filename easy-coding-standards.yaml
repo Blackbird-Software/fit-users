@@ -1,10 +1,10 @@
 imports:
-  - vendor/sylius-labs/coding-standard/easy-coding-standard.yml
-  - vendor/symplify/easy-coding-standard/config/set/clean-code.yaml
-  - vendor/symplify/easy-coding-standard/config/set/php_codesniffer/php-codesniffer-psr2.yaml
-  - vendor/symplify/easy-coding-standard/config/set/php_cs_fixer/php-cs-fixer-psr2.yaml
-  - vendor/symplify/easy-coding-standard/config/set/php71.yaml
-  - vendor/symplify/easy-coding-standard/config/set/symfony.yaml
+  - { resource: 'vendor/sylius-labs/coding-standard/easy-coding-standard.yml' }
+  - { resource: 'vendor/symplify/easy-coding-standard/config/set/clean-code.yaml' }
+  - { resource: 'vendor/symplify/easy-coding-standard/config/set/php_codesniffer/php-codesniffer-psr2.yaml' }
+  - { resource: 'vendor/symplify/easy-coding-standard/config/set/php_cs_fixer/php-cs-fixer-psr2.yaml' }
+  - { resource: 'vendor/symplify/easy-coding-standard/config/set/php71.yaml' }
+  - { resource: 'vendor/symplify/easy-coding-standard/config/set/symfony.yaml' }
 
 services:
   # All rules with default values
@@ -45,12 +45,39 @@ services:
     equal: false
     identical: false
     less_and_greater: false
-    
-  # Remove useless phpDoc
-  PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer: ~
-  
-  # Removre unsued public methods
+
+  # Read: https://github.com/Symplify/CodingStandard#rules-overview
+  # General rules - sniffs
+  PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowLongArraySyntaxSniff: ~
   Symplify\CodingStandard\Sniffs\DeadCode\UnusedPublicMethodSniff: ~
+  Symplify\CodingStandard\Sniffs\Architecture\DuplicatedClassShortNameSniff:
+    allowed_class_names:
+      - 'Request'
+      - 'Response'
+      - 'Kernel'
+      - 'Controller'
+  Symplify\CodingStandard\Sniffs\Architecture\ExplicitExceptionSniff: ~
+  Symplify\CodingStandard\Sniffs\CleanCode\ForbiddenReferenceSniff: ~
+  Symplify\CodingStandard\Sniffs\ControlStructure\SprintfOverContactSniff:
+    maxConcatCount: 0
+  Symplify\CodingStandard\Sniffs\Debug\CommentedOutCodeSniff: ~
+  Symplify\CodingStandard\Sniffs\Debug\DebugFunctionCallSniff: ~
+  Symplify\CodingStandard\Sniffs\Naming\InterfaceNameSniff: ~
+  Symplify\CodingStandard\Sniffs\Naming\TraitNameSniff: ~
+
+  # General rules - fixers
+  PhpCsFixer\Fixer\ArrayNotation\TrailingCommaInMultilineArrayFixer: ~
+  PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer: ~
+  PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer: ~
+  Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer: ~
+  Symplify\CodingStandard\Fixer\Commenting\RemoveEndOfFunctionCommentFixer: ~
+  Symplify\CodingStandard\Fixer\Order\PrivateMethodOrderByUseFixer: ~
+  Symplify\CodingStandard\Fixer\Order\PropertyOrderByComplexityFixer: ~
+  Symplify\CodingStandard\Fixer\Commenting\RemoveEmptyDocBlockFixer:  ~
+  Symplify\CodingStandard\Fixer\ControlStructure\RequireFollowedByAbsolutePathFixer: ~
+  Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer:  ~
+  Symplify\CodingStandard\Fixer\Property\ArrayPropertyDefaultValueFixer: ~
+  Symplify\CodingStandard\Fixer\Solid\FinalInterfaceFixer: ~
 
   # Metrics
   PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:

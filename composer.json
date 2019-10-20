@@ -33,7 +33,8 @@
         "symfony/maker-bundle": "^1.13",
         "symfony/profiler-pack": "^1.0",
         "symfony/var-dumper": "4.3.*",
-        "symfony/web-server-bundle": "4.3.*"
+        "symfony/web-server-bundle": "4.3.*",
+        "symplify/easy-coding-standard": "^6.1"
     },
     "config": {
         "preferred-install": {
@@ -76,10 +77,10 @@
             "@analyse"
         ],
         "fix": [
-            "vendor/bin/ecs check --ansi --no-progress-bar bin public src --config easy-coding-standards.yml --fix"
+            "vendor/bin/ecs check --ansi --no-progress-bar bin public src --config easy-coding-standards.yaml --fix"
         ],
         "analyse": [
-            "vendor/bin/ecs check --ansi --no-progress-bar --config easy-coding-standards.yml bin public src",
+            "vendor/bin/ecs check --ansi --no-progress-bar --config easy-coding-standards.yaml bin public src",
             "vendor/bin/phpstan analyse --ansi --no-progress -c phpstan.neon -l 7 bin public src"
         ]
     },

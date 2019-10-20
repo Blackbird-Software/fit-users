@@ -27,10 +27,7 @@ class CognitoAuthenticator extends AbstractGuardAuthenticator
     public function checkCredentials($credentials, UserInterface $user)
     {
         try {
-            $this->cognitoClient->checkCredentials(
-                $credentials['email'],
-                $credentials['password']
-            );
+            $this->cognitoClient->checkCredentials($credentials['email'], $credentials['password']);
         } catch (CognitoIdentityProviderException $exception) {
             return false;
         }

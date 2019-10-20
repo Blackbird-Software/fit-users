@@ -6,7 +6,7 @@ namespace App\Security;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class User implements UserInterface
+final class User implements UserInterface
 {
     /** @var string */
     private $email;

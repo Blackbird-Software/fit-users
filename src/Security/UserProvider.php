@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class UserProvider implements UserProviderInterface
+final class UserProvider implements UserProviderInterface
 {
     /** @var AWSCognitoClient */
     private $cognitoClient;
@@ -37,14 +37,9 @@ class UserProvider implements UserProviderInterface
         $roles = [];
 
         if (count($groups['Groups']) > 0) {
-            $roles = (
-                array_map(
-                    function ($item) {
-                        return 'ROLE_'.$item['GroupName'];
-                    },
-                    $groups['Groups']
-                )
-            );
+            $roles = array_map(function ($item) {
+                return 'ROLE_'.$item['GroupName'];
+            }, $groups['Groups']);
         }
 
         return new User($username, $roles);
@@ -56,12 +51,7 @@ class UserProvider implements UserProviderInterface
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(
-                sprintf(
-                    'Invalid user class "%s".',
-                    get_class($user)
-                )
-            );
+            throw new UnsupportedUserException(sprintf('Invalid user class "%s".', get_class($user)));
         }
 
         return $this->loadUserByUsername($user->getEmail());

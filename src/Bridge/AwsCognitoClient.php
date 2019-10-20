@@ -10,17 +10,16 @@ use Aws\Result;
 
 class AwsCognitoClient
 {
-    /** @var CognitoIdentityProviderClient */
-    private $client;
+    /** @var string */
+    private $clientId;
 
     /** @var string */
     private $poolId;
 
     /** @var string */
-    private $clientId;
-
-    /** @var string */
     private $clientSecret;
+    /** @var CognitoIdentityProviderClient */
+    private $client;
 
     public function __construct(
         string $poolId,
@@ -108,12 +107,7 @@ class AwsCognitoClient
 
     protected function hash(string $message): string
     {
-        $hash = hash_hmac(
-            'sha256',
-            $message,
-            $this->clientSecret,
-            true
-        );
+        $hash = hash_hmac('sha256', $message, $this->clientSecret, true);
 
         return base64_encode($hash);
     }
