@@ -48,6 +48,9 @@ services:
     
   # Remove useless phpDoc
   PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer: ~
+  
+  # Removre unsued public methods
+  Symplify\CodingStandard\Sniffs\DeadCode\UnusedPublicMethodSniff: ~
 
   # Metrics
   PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
