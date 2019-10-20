@@ -58,13 +58,11 @@ parameters:
   skip:
     SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff: ~
     ObjectCalisthenics\Sniffs\CodeAnalysis\OneObjectOperatorPerLineSniff: ~
-
-  exclude_checkers:
     # Symfony ruleset
-    - PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer
-    - PhpCsFixer\Fixer\Operator\NewWithBracesFixer
-    - PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer
+    PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer: ~
+    PhpCsFixer\Fixer\Operator\NewWithBracesFixer: ~
+    PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer: ~
     # mutually excluded
-    - SlevomatCodingStandard\Sniffs\ControlStructures\DisallowYodaComparisonSniff
-    - PhpCsFixer\Fixer\Operator\UnaryOperatorSpacesFixer
-    - PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer
+    SlevomatCodingStandard\Sniffs\ControlStructures\DisallowYodaComparisonSniff: ~
+    PhpCsFixer\Fixer\Operator\UnaryOperatorSpacesFixer: ~
+    PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer: ~
