@@ -45,6 +45,9 @@ services:
     equal: false
     identical: false
     less_and_greater: false
+    
+  # Remove useless phpDoc
+  PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer: ~
 
   # Metrics
   PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
