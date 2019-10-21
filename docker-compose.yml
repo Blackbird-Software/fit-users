@@ -1,26 +1,27 @@
 version: "3.5"
 
 services:
-  fit_users_gateway:
+  #TODO rewrite docker images
+  gateway:
     container_name: fit_users_gateway
     image: bref/fpm-dev-gateway
     ports:
-      - 8888:80
+      - 8000:80
     volumes:
       - .:/var/task:ro
       - ./var/cache:/var/task/cache
       - ./var/log:/var/task/log
     depends_on:
-      - fit_users_php
+      - php
     environment:
       HANDLER: public/index.php
-  fit_users_php:
-    container_name: fit_users_php
+  php:
+    container_name: php
     image: bref/php-73-fpm-dev
     volumes:
       - .:/var/task:ro
-  fit_users_cli:
-    container_name: fit_users_cli
+  cli:
+    container_name: cli
     image: bref/php-73
     volumes:
       - .:/var/task:ro
