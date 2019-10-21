@@ -22,16 +22,32 @@
         "symfony/yaml": "4.3.*"
     },
     "require-dev": {
+        "beberlei/assert": "^3.2",
+        "coduo/php-matcher": "^3.1",
+        "friends-of-behat/context-service-extension": "^1.3",
+        "friends-of-behat/cross-container-extension": "^1.1",
+        "friends-of-behat/suite-settings-extension": "^1.0",
+        "friends-of-behat/symfony-extension": "^2.0",
+        "friends-of-behat/variadic-extension": "^1.1",
+        "infection/infection": "^0.14.2",
+        "kanel/phpspec-data-provider-extension": "^1.0",
+        "leanphp/phpspec-code-coverage": "^4.2",
+        "mockery/mockery": "^1.2",
         "nelmio/api-doc-bundle": "^3.4",
         "object-calisthenics/phpcs-calisthenics-rules": "^3.5",
         "phploc/phploc": "^5.0",
+        "phpspec/nyan-formatters": "^2.0",
+        "phpspec/phpspec": "^4.2",
         "phpstan/phpstan": "^0.11.16",
         "phpstan/phpstan-doctrine": "^0.11.6",
         "phpstan/phpstan-strict-rules": "^0.11.1",
+        "rector/rector": "^0.5.17",
+        "roave/backward-compatibility-check": "3.0.0",
         "sensiolabs/security-checker": "^6.0",
         "sylius-labs/coding-standard": "^3.1",
         "symfony/maker-bundle": "^1.13",
         "symfony/profiler-pack": "^1.0",
+        "symfony/test-pack": "^1.0",
         "symfony/var-dumper": "4.3.*",
         "symfony/web-server-bundle": "4.3.*",
         "symplify/easy-coding-standard": "^6.1"
@@ -81,7 +97,23 @@
         ],
         "analyse": [
             "vendor/bin/ecs check --ansi --no-progress-bar --config easy-coding-standards.yaml bin public src",
-            "vendor/bin/phpstan analyse --ansi --no-progress -c phpstan.neon -l 7 bin public src"
+            "vendor/bin/phpstan analyse --ansi --no-progress -c phpstan.neon -l 7 bin public src",
+            "vendor/bin/psalm"
+        ],
+        "rector": [
+            "vendor/bin/rector process src --set php74 --set symfony44"
+        ],
+        "check-compatibility": [
+            "vendor/bin/roave-backward-compatibility-check --format=markdown > compatibility_results.md"
+        ],
+        "infection": [
+            "vendor/bin/infections tests"
+        ],
+        "test": [
+            "vendor/bin/phpspec run -fpretty --ansi"
+        ],
+        "spec-coverage": [
+            "vendor/bin/phpspec run -c phpspec-with-test-coverage.yml.dist --ansi"
         ]
     },
     "conflict": {

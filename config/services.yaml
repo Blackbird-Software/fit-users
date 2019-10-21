@@ -26,6 +26,10 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    aws_cognito_authenticator:
+        class: App\Security\CognitoAuthenticator
+        autowire: true
+
     App\Bridge\AwsCognitoClient:
         arguments:
             $poolId: '%env(COGNITO_POOL_ID)%'
@@ -33,4 +37,3 @@ services:
             $clientSecret: '%env(COGNITO_CLIENT_SECRET)%'
             $key: '%env(AWS_ACCESS_KEY_ID)%'
             $secret: '%env(AWS_SECRET_ACCESS_KEY)%'
-

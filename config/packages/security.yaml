@@ -16,7 +16,7 @@ security:
       provider: main_user_provider
       guard:
         authenticators:
-          - App\Security\CognitoAuthenticator
+          - 'aws_cognito_authenticator'
     api_register:
       pattern:  "^/api/users$"
       methods: [POST]
@@ -28,7 +28,7 @@ security:
       provider: main_user_provider
       guard:
         authenticators:
-          - App\Security\CognitoAuthenticator
+          - 'aws_cognito_authenticator'
 
   access_control:
     - { path: "^/api/doc.json$", methods: ["GET"], roles: IS_AUTHENTICATED_ANONYMOUSLY }
